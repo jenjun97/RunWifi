@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class RunWifiSample {
+public class Sample {
 
 	public static final String CODE_UTF8 = "utf-8";
 	public static final String CODE_GBK = "gbk";
@@ -21,13 +23,13 @@ public class RunWifiSample {
 
 	public static final String TEST_CONNECT = "ping www.baidu.com";// wifi连接后测试是否ping通的一个网址
 
-
 	public static void main(String[] args) {
 		// 列出所有的可用wifi，key是wifi名称，value是wifi的强度(用这个不如自己打开wifi看附近有哪些可用来得快)
-//		Map<String,String> map = getWifi();
-//		for(String key:map.keySet()){
-//			System.out.println(key+"..."+map.get(key));
+//		Map<String, String> map = getWifi();
+//		for (String key : map.keySet()) {
+//			System.out.println(key + "..." + map.get(key));
 //		}
+
 		boolean flag = true;
 		String wifiName = "402";// wifi测试账号
 		String password = "";// wifi测试密码
@@ -143,32 +145,32 @@ public class RunWifiSample {
 		}
 		return flag;
 	}
-	
+
 	static String XML_FORMAT;
 
-//    /**
-//     * 获取所有可用的wifi名称,key是wifi名称，value是信号强度
-//     */
-//    public static Map<String, String> getWifi() {
-//        Map<String, String> map = new HashMap<>();
-//        //这里使用UTF-8去获取，中文名称的wifi不会乱码
-//        String key = null;
-//        String value = null;
-//        boolean saveFlag = false;
-//        for (String str : execute(WIFI_LIST, null, CODE_UTF8)) {
-//            if (str.startsWith("SSID")) {
-//                key = str.substring(9, str.length());
-//            } else if (str.endsWith("%")) {
-//                value = str.substring(str.length() - 3, str.length() - 1);
-//                saveFlag = true;
-//            }
-//            if (saveFlag) {
-//                map.put(key, value);
-//                saveFlag = false;
-//            }
-//        }
-//        return map;
-//    }
+	/**
+	 * 获取所有可用的wifi名称,key是wifi名称，value是信号强度
+	 */
+	public static Map<String, String> getWifi() {
+		Map<String, String> map = new HashMap<>();
+		// 这里使用UTF-8去获取，中文名称的wifi不会乱码
+		String key = null;
+		String value = null;
+		boolean saveFlag = false;
+		for (String str : execute(WIFI_LIST, null, CODE_UTF8)) {
+			if (str.startsWith("SSID")) {
+				key = str.substring(9, str.length());
+			} else if (str.endsWith("%")) {
+				value = str.substring(str.length() - 3, str.length() - 1);
+				saveFlag = true;
+			}
+			if (saveFlag) {
+				map.put(key, value);
+				saveFlag = false;
+			}
+		}
+		return map;
+	}
 
 	/**
 	 * 在指定目录下执行指定命令,默认使用GBK编码
